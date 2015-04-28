@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+  <link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+  <link href="{% static "css/bootstrap-sortable.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} Usuarios {% endblock %}
+
+{% block content %}
+	<div class="row mt">
+		<div class="col-lg-12">
+      <h3 class="inline" style="padding-left:20px;">
+        <i class="fa fa-group"></i> 
+          {% if employees %}Empleados
+          {% else %} Clientes
+          {% endif %} <small>({{users.count}} usuarios)</small>
+      </h3>
+      <hr style="border-color:#ddd;">
+      <div class="row-fluid actions-bar">
+        <a href="{% if employees %}{% url "admin:users:new_employee"%}{% else %}{% url "admin:users:new_client"%}{% endif %}" class="btn btn-success">Agregar {% if employees %}Empleado
+          {% else %} Cliente
+          {% endif %} </a>
+        
+        <select id="search-box" class="form-control chosen-select">
+          <option></option>
+          {% for site_user in users %}
+            <option data-href="{% url "admin:users:profile" site_user.id %}">
+              <img src="{{MEDIA_URL}}HOLAAA">
+              {% if site_user.first_name and site_user.last_name %}
+                {{site_user.first_name}} {{site_user.last_name}}
+              {% else %}
+                Usuario sin nombre
+              {% endif %}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      <section id="unseen">
+        <table class="table table-striped sortable">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="text-center">Nombre</th>
+              <th class="text-center hidden-xs">Usuario</th>
+              <th class="text-center hidden-xs">Email</th>
+              <th class="text-center hidden-xs">Estado</th>
+              <th class="text-center hidden-xs">Teléfono</th>
+              <th class="text-center hidden-xs">Móvil</th>
+              <th class="text-center hidden-xs">Cargo</th>
+              <th class="text-center hidden-xs">Empresa</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if users %}
+              {% for site_user in users %}
+                <tr>
+                  <td class="text-center">
+                    <img src="{{MEDIA_URL}}{{ site_user.avatar }}">
+                  </td>
+                  <td class="text-center">
+                    <a href="{% url "admin:users:profile" site_user.id %}">
+                      {% if site_user.first_name and site_user.last_name %}
+                        {{site_user.first_name}} {{site_user.last_name}}
+                      {% else %}
+                        Modificar
+                      {% endif %} 
+                    </a>
+                  </td>
+                  <td class="text-center hidden-xs">{{site_user.username}}</td>
+                  <td class="text-center hidden-xs">{{site_user.email}}</td>
+                  <td class="text-center hidden-xs">
+                    {% if site_user.is_active %}
+                      <a href="{% url "admin:users:block" site_user.id %}">
+                        <span class="text-success fa fa-check-circle"></span> Activo  
+                      </a>
+                      
+                    {% else %}
+                      <a href="{% url "admin:users:unblock" site_user.id %}">
+                        <span class="text-danger fa fa-times-circle"></span> Inactivo
+                      </a>
+                    {% endif %}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {% if site_user.phone %}
+                      {{site_user.phone}}
+                    {% else %}
+                      --
+                    {% endif %}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {% if site_user.mobile %}
+                      {{site_user.mobile}}
+                    {% else %}
+                      --
+                    {% endif %}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {% if site_user.role %}
+                      {{site_user.role}}
+                    {% else %}
+                      --
+                    {% endif %}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {% if site_user.company %}
+                      {{site_user.company}}
+                    {% else %}
+                      --
+                    {% endif %}
+                  </td>
+                </tr>            
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="9" class="text-center">
+                  <p class="alert alert-info">
+                    No hay 
+                      {% if employees %} empleados
+                      {% else %} clientes
+                      {% endif %}
+                    registrados
+                  </p>
+                </td>
+              </tr>
+            {% endif %}   
+          </tbody>
+        </table>
+      </section>
+    </div>
+	</div>
+{% endblock %}
+
+{% block js_imports %}
+  <script type="text/javascript" src="{% static "js/bootstrap-sortable.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+{% endblock %}
+

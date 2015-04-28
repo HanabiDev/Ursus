@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+  <link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+  <link href="{% static "css/bootstrap-sortable.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} Estudios {% endblock %}
+
+{% block content %}
+	<div class="row mt">
+		<div class="col-lg-12">
+      <h3 class="inline" style="padding-left:20px;">
+        <i class="fa fa-search"></i> 
+          Estudios <small>({{studies.count}} Estudios)</small>
+      </h3>
+      <hr style="border-color:#ddd;">
+      <div class="row-fluid actions-bar">
+        {% if user.is_superuser or user.is_staff%}
+          <a href="{% url "studies:create_studies"%}" class="btn btn-primary">Carga Masiva </a>
+          <a href="{% url "studies:new_study"%}" class="btn btn-success">Agregar Estudio </a>
+        {% else %}
+          <b style="margin-right:10px;">Buscar: </b>
+        {% endif %}
+        
+        <select id="search-box" class="form-control chosen-select">
+          <option></option>
+          {% for study in studies %}
+            <option data-href="{% url "studies:view_study" study.id %}">
+                Estudio #{{study.id}}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      <section id="unseen">
+        <table class="table table-striped sortable">
+          <thead>
+            <tr>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Fecha</th>
+              <th class="text-center hidden-xs">Requisición</th>
+              <th class="text-center">Candidato</th>
+              <th class="text-center">Servicio</th>
+              <th class="text-center hidden-xs">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if studies %}
+              {% for study in studies %}
+                <tr>
+                  <td class="text-center">
+                    <a href="{% url "studies:view_study" study.id %}">
+                      Estudio #{{study.id}}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    {{study.creation_date}}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {{study.requisition}}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {{study.candidate}}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {{study.service}}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {% if study.service.roles.count == study.assignment_set.count %}
+                      Asignado
+                    {% else %}
+                      Sin Asignar
+                    {% endif %}
+                  </td>
+                </tr>            
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="9" class="text-center">
+                  <p class="alert alert-info">
+                    No hay Estudios registradas
+                  </p>
+                </td>
+              </tr>
+            {% endif %}   
+          </tbody>
+        </table>
+      </section>
+    </div>
+	</div>
+{% endblock %}
+
+{% block js_imports %}
+  <script type="text/javascript" src="{% static "js/bootstrap-sortable.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+{% endblock %}
+

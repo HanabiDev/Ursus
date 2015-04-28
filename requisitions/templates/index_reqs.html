@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+  <link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+  <link href="{% static "css/bootstrap-sortable.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} Requisiciones {% endblock %}
+
+{% block content %}
+	<div class="row mt">
+		<div class="col-lg-12">
+      <h3 class="inline" style="padding-left:20px;">
+        <i class="fa fa-book"></i> 
+          Requisiciones <small>({{reqs.count}} requisiciones)</small>
+      </h3>
+      <hr style="border-color:#ddd;">
+      <div class="row-fluid actions-bar">
+        {% if user.is_superuser or user.is_staff or user.type == 'C'%}
+          <a href="{% url "reqs:new_req"%}" class="btn btn-success">Agregar Requisición </a>
+        {% else %}
+          <b style="margin-right:10px;">Buscar: </b>
+        {% endif %}
+        <select id="search-box" class="form-control chosen-select">
+          <option></option>
+          {% for req in reqs %}
+            <option data-href="{% url "reqs:view_req" req.id %}">
+                Requisición #{{req.id}}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      <section id="unseen">
+        <table class="table table-striped sortable">
+          <thead>
+            <tr>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Fecha</th>
+              <th class="text-center hidden-xs">Cliente</th>
+              <th class="text-center hidden-xs">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if reqs %}
+              {% for req in reqs %}
+                <tr>
+                  <td class="text-center">
+                    <a href="{% url "reqs:view_req" req.id %}">
+                      Requisición #{{req.id}}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    {{req.open_date}}
+                  </td>
+                  <td class="text-center hidden-xs">{{req.client}}</td>
+                  <td class="text-center hidden-xs">
+                    {% if req.study_set.count > 0 %}
+                      {{req.study_set.count}} estudios asignados
+                    {% else %}
+                      Sin Asignar
+                    {% endif %}
+                  </td>
+                </tr>            
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="9" class="text-center">
+                  <p class="alert alert-info">
+                    No hay requisiciones registradas
+                  </p>
+                </td>
+              </tr>
+            {% endif %}   
+          </tbody>
+        </table>
+      </section>
+    </div>
+	</div>
+{% endblock %}
+
+{% block js_imports %}
+  <script type="text/javascript" src="{% static "js/bootstrap-sortable.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+{% endblock %}
+

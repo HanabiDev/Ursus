@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block imports %}
+	<link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Editar Usuario {% endblock %}
+{% block content %}
+	<h3 style="padding-left:20px;">
+		<i class="fa fa-user"></i> Editar usuario ({{site_user.username}})
+	</h3>
+	<hr style="border-color:#ddd;">
+
+	<div class="col-lg-2">
+		<img id="user-avatar" src="{{MEDIA_URL}}{{site_user.avatar}}" width="150" class="img-circle">
+		<p class="text-center" style="margin-top:20px;">
+			<button id="change-photo-btn" class="btn btn-primary">Cambiar Foto</button>
+		</p>
+	</div>
+	<div class="col-lg-6">
+		<form id="add_user" method="POST" action="." enctype="multipart/form-data">
+			{% csrf_token %}
+			{{form}}
+			<p class="text-right">
+				<a href="{% url "admin:users:home" %}" class="btn btn-default" >Cancelar</a>
+				<button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+			</p>
+		</form>
+	</div>
+	
+{% endblock %}
+{% block js_imports %}
+  <script src="{% static "js/chosen.jquery.min.js" %}"></script>
+  <script src="{% static "js/bootstrap-inputmask/bootstrap-inputmask.min.js" %}"></script>
+{% endblock %}
+

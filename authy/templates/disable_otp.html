@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load future i18n %}
+
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+  <h1 style="padding-top:40px;">
+  	{% block title %}{% trans "Disable Two-factor Authentication" %}{% endblock %}
+  </h1>
+  <p>
+  	Vas a deshabilitar la autenticación de dos factores. Esto compromete la seguridad de tu cuenta ¿estás seguro?
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <br>
+    {{ form }}
+    <p>
+    <br>
+    	<button class="btn btn-danger" type="submit">
+    		{% trans "Disable" %}
+    	</button>
+        <a class="btn btn-success" href="{% url "authy:account" %}"> Cancelar</a>	
+    </p>
+  </form>
+{% endblock %}

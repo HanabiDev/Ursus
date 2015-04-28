@@ -1,0 +1,80 @@
+{% load static %}
+<aside>
+  
+  <div id="sidebar"  class="nav-collapse ">
+    <!-- sidebar menu start-->
+    <ul class="sidebar-menu" id="nav-accordion">
+
+      <p class="centered">
+        <a href="{% url "authy:account" %}">
+          <img src="{{MEDIA_ROOT}}{{user.avatar.url}}" class="img-circle" width="60">
+        </a>
+      </p>
+
+      <h5 class="centered">{{user.first_name}}</h5>
+
+      <li class="mt">
+        <a href="{% url "dashboard:home" %}">
+          <i class="fa fa-home"></i>
+          <span>Inicio</span>
+        </a>
+      </li>
+
+      {% if user.is_superuser %}
+      <li class="sub-menu">
+        <a href="javascript:;" >
+          <i class="fa fa-users"></i>
+          <span>Usuarios</span>
+        </a>
+        <ul class="sub">
+          <li>
+            <a href="{% url "admin:users:employees" %}">Empleados</a>
+          </li>
+          <li>
+            <a href="{% url "admin:users:clients" %}">Clientes</a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      
+      {% if user.is_superuser or user.is_staff or user.type == 'C'%}
+      <li class="sub-menu">
+        <a href="{% url "reqs:home" %}" >
+          <i class="fa fa-book"></i>
+          <span>Requisiciones</span>
+        </a>
+      </li>
+      {% endif %}
+      {% if user.is_superuser or user.is_staff or user.type == 'C'%}
+      <li class="sub-menu">
+        <a href="{% url "studies:home" %}" >
+          <i class="fa fa-search"></i>
+          <span>Estudios</span>
+        </a>
+      </li>
+      {% endif %}
+      {% if user.type == 'E' %}
+      <li class="sub-menu">
+        <a href="{% url "studies:home" %}" >
+          <i class="fa fa-calendar"></i>
+          <span>Asignaciones</span>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if user.is_superuser or user.is_staff %}
+      <li class="sub-menu">
+        <a href="{% url "settings:home" %}" >
+          <i class=" fa fa-cogs"></i>
+          <span>Configuración</span>
+        </a>
+      </li>
+      {% endif %}
+
+    </ul>
+    <div class="hidden-xs text-center" style="color: white; position:absolute; bottom:20px;">
+      <p><small>Ursus es desarrollado por</small></p>
+      <img src="{% static "img/logo_cosegem.png" %}" style="max-width:80%">
+    </div>
+  </div>
+</aside>

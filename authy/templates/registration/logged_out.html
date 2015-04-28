@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block imports %}
+
+{% endblock %}
+{% block topmenu %}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block login %}style="margin-left:0;background:#eaeaea"{% endblock %}
+{% block content %}
+	<div class="col-lg-2">
+	</div>
+	<div class="col-lg-8">
+		
+	      <div class="row">
+	      	<div class="col-md-12 col-sm-8 mb">
+	      		<div class="grey-panel pn donut-chart" style="padding:50px;">
+			  		
+			  		<h5><img src="{% static "img/logoB.png" %}"></h5>
+					
+					<div class="row">
+						<p>
+							Ha cerrado sesión correctamente.
+						</p>
+	          		</div>
+	          		<div class="row">
+	          			<p>
+	          				<a class="btn btn-primary">Ir al Sitio Web</a>
+							<a href="{% url "authy:authy_login" %}" class="btn btn-primary">Iniciar sesión de nuevo</a>
+	          			</p>
+	          		</div>
+	          	</div>
+	      	</div>
+	    </div>	
+
+	</div>
+
+{% endblock %}

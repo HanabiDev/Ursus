@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+{% block topmenu %}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block login %}class="margin-zero"{% endblock %}
+
+{% block content %}
+		<h3 style="padding-left:20px;"><i class="fa fa-user"></i> Registrarse</h3>
+		<hr style="border-color:#ddd;">
+		<div class="col-lg-5 text-center">
+			<p>
+				<img src="{% static "img/logoB.png" %}">
+			</p>
+			<p style="padding:20px;">
+				{{message}}	
+			</p>
+		</div>
+		<div class="col-lg-6">
+			<form id="add_user" class="show-pass" method="POST" 
+			{%if editing%}
+				action="{% url "new_profile" %}"
+			{%else%}
+				action="{% url "registry" %}"
+			{%endif%}
+			>
+				{% csrf_token %}
+				{{form}}
+				<p class="text-right">
+					<a href="{% url "authy:authy_login" %}" class="btn btn-default" >Cancelar</a>
+					<button type="submit" class="btn btn-primary" >Crear Usuario</button>
+				</p>
+			</form>
+		</div>
+{% endblock %}	

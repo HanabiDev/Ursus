@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Requisición #{{req.id}} {% endblock %}
+
+{% block content %}
+	<div class="row mt">
+		<div class="col-lg-12">
+	      	<h3 class="inline" style="padding-left:20px;">
+	        	<i class="fa fa-book"></i> 
+	          	Requisición #{{req.id}} <small>(Registrada por {{req.client.first_name}} {{req.client.last_name}})</small>
+	      	</h3>
+	      	<hr style="border-color:#ddd;">
+
+	      	<div class="row mt">
+				<div class="col-lg-12">
+					<div id="resume" class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+						<div class="col-lg-12">
+							<!-- WHITE PANEL - TOP USER -->
+							<div class="white-panel pn">
+								<div class="white-header">
+									<h5>RESUMEN</h5>
+								</div>
+								
+								<div class="row">
+									<div class="col-md-5">
+										<p><small>Solicitado por:</small></p>
+										<p>
+											<img src="{{MEDIA_URL}}{{ req.client.avatar }}" class="img-circle" width="50">
+										</p>
+										<p><b>{{req.client.first_name}} {{req.client.last_name}}</b></p>
+									</div>
+									<div class="col-md-6" style="margin-bottom:20px;">
+										<a href="{% url "reqs:edit_req" req.id %}" class="btn btn-primary" style="width:80%">
+											Modificar
+										</a>
+									</div>
+									<div class="col-md-3">
+										<p class="small mt">FECHA</p>
+										<p>{{req.open_date|date:"M d, Y"}}</p>
+									</div>
+									<div class="col-md-3">
+										<p class="small mt">ESTADO</p>
+										<p>Registrada</p>
+									</div>
+									
+
+									<div class="col-md-10 col-md-offset-1">
+										<p class="small mt">DESCRIPCIÓN DE LA REQUISICIÓN</p>
+										<div class="desc-panel panel panel-default">
+										  <div class="panel-body">
+										    {{req.description|safe}}
+										  </div>
+										</div>
+										<span id="expand-panel" class="btn btn-primary" style="width:100%">
+											Expandir panel
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> 
+					<div id="asignees" class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+						<div class="col-lg-12">
+							<!-- WHITE PANEL - TOP USER -->
+							<div class="white-panel pn">
+								<div class="white-header">
+									<h5>ESTUDIOS ASIGNADOS</h5>
+								</div>
+								
+								<div class="col-md-12">
+									<table class="table table-striped">
+										<thead>
+								            <tr>
+								              <th class="text-center">Estudio</th>
+								              <th class="text-center">Candidato</th>
+								            </tr>
+								          </thead>
+								          <tbody>
+								            {% if req.study_set.all %}
+								              {% for study in req.study_set.all %}
+								                <tr>
+								                  <td class="text-center">
+								                    <a href="{% url "studies:view_study" study.id%}">
+								                      Estudio #{{study.id}}
+								                    </a>
+								                  </td>
+								                  <td class="text-center">
+								                    {{study.candidate}}
+								                  </td>
+								                </tr>            
+								              {% endfor %}
+								            {% else %}
+								              <tr>
+								                <td colspan="3" class="text-center">
+								                  <p class="alert alert-info">
+								                    No se ha asignado ningún estudio
+								                  </p>
+								                </td>
+								              </tr>
+								            {% endif %}   
+								          </tbody>
+									</table>
+								</div>
+								
+								<div class="row">
+									<p style="margin-top:25px;">
+									{% if user.is_superuser or user.is_staff %}
+										<a href="{% url "reqs:create_study" req.id %}" class="btn btn-primary">
+											Asignar Estudios
+										</a>
+									{% endif %}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    	</div>
+	</div>
+{% endblock %}
+
+{% block js_imports%}
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('table').addClass('table table-bordered');
+		$('#expand-panel').click(function(){
+			$('#resume').toggleClass('col-lg-7 col-md-7 col-sm-7');
+			$(this).html('Contraer Panel');
+		});
+	});
+</script>
+{% endblock %}

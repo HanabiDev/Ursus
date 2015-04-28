@@ -1,0 +1,6 @@
+.DS_STORE
+media/*
+
+*/migrations/0*.py
+*.sqlite3
+*.pyc
