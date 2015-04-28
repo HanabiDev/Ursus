@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,7 +39,7 @@
   <section id="container" >
       
     {% block topmenu %}{% include "topmenu.html" %}{% endblock %}
-    {% block sidebar %}{% include "sidebark.html" %}{% endblock %}
+    {% block sidebar %}{% include "side-bar.html" %}{% endblock %}
 
     <section id="main-content" {% block login %}{% endblock %}>
       <section class="wrapper site-min-height">
