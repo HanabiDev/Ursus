@@ -36,8 +36,7 @@ else:
     DEVEL = False
 
 DEBUG = True
-
-TEMPLATE_DEBUG = DEVEL
+TEMPLATE_DEBUG = True
 
 if DEVEL:
     DATABASES = {
