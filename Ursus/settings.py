@@ -57,7 +57,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'ursus',
             'USER': 'root',
-            'PASSWORD': 'UrsusBDMaster',
+            'PASSWORD': 'UrsusDBMaster',
         }
     }
 
