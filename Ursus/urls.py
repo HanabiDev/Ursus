@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 	url(r'^requisiciones/', include('requisitions.urls', 'reqs')),
 	url(r'^estudios/', include('studies.urls', 'studies')),
 	url(r'^asignaciones/', include('assignments.urls', 'assignments')),
+	url(r'^reportes/', include('reports.urls', 'reports')),
 	url(r'^configuracion/', include('settings.urls', 'settings')),
 
 	url(r'^redactor/', include('redactor.urls')),

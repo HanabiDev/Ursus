@@ -89,3 +89,17 @@ def save_attachements(requisition, type, files):
 	for file in files:
 		new_attachement = Atachment(requisition=requisition, file_type=type, file_resource=file)
 		new_attachement.save()
+
+from shutil import make_archive
+from django.core.servers.basehttp import FileWrapper
+from django.conf import settings
+from django.http import HttpResponse
+
+def download(request, req_id):
+    file_path = settings.MEDIA_ROOT+'/uploads/requisitions/'+req_id+'/'
+    print file_path
+
+    path_to_zip = make_archive(file_path,"zip",file_path)
+    response = HttpResponse(FileWrapper(file(path_to_zip,'rb')), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=requisicion_'+req_id+'.zip'
+    return response

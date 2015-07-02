@@ -33,13 +33,15 @@ def import_data(datafile):
 				address=row[7],
 				aspired_role=row[8]
 			)
+			employee = User.objects.get(id=row[10])
+			
 			candidate.candidate_photo = 'uploads/avatars/candidates/candidate.png'
 			candidate.save()
 
-			study = Study(requisition=requisition, candidate=candidate)
+			study = Study(requisition=requisition, candidate=candidate, service_id=row[9])
 			study.save()
 
-			employee = User.objects.get(id=row[9])
+			
 			assignment = Assignment(study=study, employee=employee)
 			assignment.save()
 

@@ -82,7 +82,9 @@ INSTALLED_APPS = (
     'requisitions',
     'studies',
     'assignments',
+    'reports',
     'settings',
+
 )
 
 MIDDLEWARE_CLASSES = (
