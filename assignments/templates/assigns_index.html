@@ -62,7 +62,9 @@
                     {{assign.study.service}}
                   </td>
                   <td class="text-center hidden-xs">
-                    {% if study.service.roles.count == study.assignment_set.count %}
+                    {% if assign.reportform_set.all %}
+                      Reporte de {{assign.reportform_set.first.get_report_type_display}}
+                    {% elif study.service.roles.count == study.assignment_set.count %}
                       Asignado
                     {% else %}
                       Sin Asignar

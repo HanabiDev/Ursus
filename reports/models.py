@@ -5,9 +5,9 @@ from studies.models import Assignment
 # Create your models here.
 
 REPORT_CHOICES = (
-	('Visita Domiciliaria','HV'),
-	('Situación Legal','LS'),
-	('Estudio de Seguridad','CV'),
+	('HV','Visita Domiciliaria'),
+	('LS','Situación Legal'),
+	('CV','Estudio de Seguridad'),
 )
 
 class ReportForm(models.Model):

@@ -31,7 +31,8 @@ def import_data(datafile):
 				mobile=row[5],
 				email=row[6],
 				address=row[7],
-				aspired_role=row[8]
+				aspired_role=row[8],
+				candidate_photo='/media/uploads/avatars/candidates/candidate.png'
 			)
 			employee = User.objects.get(id=row[10])
 			
