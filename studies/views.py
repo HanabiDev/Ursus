@@ -49,8 +49,9 @@ def add_candidate(request):
 		return render_to_response('study.html', {'adding':True, 'form':form}, context_instance=RequestContext(request))
 
 def edit_candidate(request, candidate_id):
+	candidate = Candidate.objects.get(id=candidate_id)
 	if request.method == 'GET':
-		form = CandidateForm()
+		form = CandidateForm(instance=candidate)
 		return render_to_response('study.html', {'adding':True, 'form':form}, context_instance=RequestContext(request))
 
 	if request.method == 'POST':

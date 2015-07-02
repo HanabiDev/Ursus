@@ -46,13 +46,21 @@ def create_req(request):
 					new_atachment = Atachment(requisition=new_req, file_type='RE', file_resource=resume)
 					new_atachment.save()
 
-			notificate_requisition(request.user)
+			notificate_requisition(request.user, new_req.id)
 			return redirect(reverse_lazy('reqs:home'))
 
 		return render_to_response('requisition.html', {'form':form}, context_instance=RequestContext(request))
 
 def view_req(request, req_id):
 	req = Requisition.objects.get(id=req_id)
+
+	if request.GET.get('notif'):
+		not_id = request.GET.get('notif')
+		notif = Notification.objects.get(id=not_id)
+		notif.status=True
+		notif.save()
+		print notif
+
 	return render_to_response('req_detail.html', {'req':req}, context_instance=RequestContext(request))
 
 def edit_req(request, req_id):
@@ -72,17 +80,35 @@ def edit_req(request, req_id):
 
 		return render_to_response('requisition.html', {'form':form, 'editing':True, 'id': req_id}, context_instance=RequestContext(request))
 
-def notificate_requisition(site_user):
+from django.core.mail import send_mail
+
+def notificate_requisition(site_user, element_id):
 	users = User.objects.filter(is_superuser=True)
 
+	mails = []
 	for user in users:
+		mails.append(user.email)
+
 		notification = Notification(
+				a_tag='',
 				user=user,
-				message='El cliente '+site_user.first_name+' '+site_user.last_name+' ha registrado una nueva requisición.'.decode('utf-8'),
+				message='El cliente '+site_user.first_name+' '+site_user.last_name+' ha registrado una nueva requisición.</a>'.decode('utf-8'),
 				short=u"Nueva requisición",
 				icon="fa fa-book"
 			)
 		notification.save()
+		notification.a_tag='<a href="/requisiciones/ver/'+str(element_id)+'?notif='+str(notification.id)+'">'
+		notification.save()
+
+	send_mail(
+		subject=u'Nueva requisición registrada', 
+		message='El cliente '+site_user.first_name+' '+site_user.last_name+' ha registrado una nueva requisicion.',
+		html_message='<p>El cliente '+site_user.first_name+' '+site_user.last_name+' ha registrado una nueva requisicion. <a href="ursus.cosegem.com/requisiciones/ver/'+str(element_id)+'?notif='+str(notification.id)+'">Ver requisicion</a></p>'.decode('utf-8'),
+		from_email='notificaciones.ursus@cosegem.com',
+		recipient_list=mails,
+		fail_silently=False 
+	)
+
 
 
 def save_attachements(requisition, type, files):

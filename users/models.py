@@ -66,6 +66,7 @@ class SiteUser(User):
         proxy = True
 
 class Notification(models.Model):
+    a_tag=models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     icon = models.CharField(max_length=100)
