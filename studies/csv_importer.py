@@ -14,7 +14,7 @@ def import_data(datafile):
 	base_dir = settings.BASE_DIR+settings.MEDIA_URL+'uploads/massive/'
 	path = default_storage.save(base_dir+'temp.csv', ContentFile(datafile.read())) 
 	
-	dataReader = csv.reader(open(path, 'rU'), delimiter=',', quotechar='"')
+	dataReader = csv.reader(open(path, 'rU'), delimiter=';', quotechar='"')
 
 
 	for row in dataReader:

@@ -14,7 +14,7 @@
 
 	      	<div class="row mt">
 				<div class="col-lg-12">
-					<div id="resume" class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+					<div class="resume col-lg-7 col-md-7 col-sm-7 col-xs-12">
 						<div class="col-lg-12">
 							<!-- WHITE PANEL - TOP USER -->
 							<div class="white-panel pn">
@@ -52,22 +52,103 @@
 										    {{req.description|safe}}
 										  </div>
 										</div>
-										<span id="expand-panel" class="btn btn-primary" style="width:100%">
-											Expandir panel
-										</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div> 
-					<div id="asignees" class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+					<div class="resume col-lg-5 col-md-5 col-sm-5 col-xs-12">
+						<div class="col-lg-12">
+							<!-- WHITE PANEL - TOP USER -->
+							<div class="white-panel pn">
+								<div class="white-header">
+									<h5>ARCHIVOS ADJUNTOS</h5>
+								</div>
+								<div class="row">
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <div class="panel-group" style="max-height:491px;" id="accordion" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingOne">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                            Hojas de Vida
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div class="panel-body text-left" style="max-height:274px;overflow:auto;">
+                                                        {% for attach in req.atachment_set.all %}
+                                                            {% if attach.file_type == 'CV' %}
+                                                                <p>
+                                                                    <a class="btn-link" target="_blank" href="/media/{{attach.file_resource}}">
+                                                                        {{attach}} ({{attach.get_size|filesizeformat}})
+                                                                    </a>
+                                                                </p>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingTwo">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                            Ordenes de Compra
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="panel-body text-left" style="max-height:274px;overflow:auto;">
+                                                        {% for attach in req.atachment_set.all %}
+                                                            {% if attach.file_type == 'BO' %}
+                                                            <p>
+                                                                <a class="btn-link" target="_blank" href="/media/{{attach.file_resource}}">
+                                                                    {{attach}} ({{attach.get_size|filesizeformat}})
+                                                                </a>
+                                                            </p>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingThree">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                            Otros
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                    <div class="panel-body text-left" style="max-height:274px;overflow:auto;">
+                                                        {% for attach in req.atachment_set.all %}
+                                                            {% if attach.file_type == 'RE' %}
+                                                            <p>
+                                                                <a class="btn-link" target="_blank" href="/media/{{attach.file_resource}}">
+                                                                    {{attach}} ({{attach.get_size|filesizeformat}})
+                                                                </a>
+                                                            </p>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+							</div>
+						</div>
+					</div>
+
+                    <div class="resume col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="col-lg-12">
 							<!-- WHITE PANEL - TOP USER -->
 							<div class="white-panel pn">
 								<div class="white-header">
 									<h5>ESTUDIOS ASIGNADOS</h5>
 								</div>
-								
+
 								<div class="col-md-12">
 									<table class="table table-striped">
 										<thead>
@@ -88,7 +169,7 @@
 								                  <td class="text-center">
 								                    {{study.candidate}}
 								                  </td>
-								                </tr>            
+								                </tr>
 								              {% endfor %}
 								            {% else %}
 								              <tr>
@@ -98,11 +179,11 @@
 								                  </p>
 								                </td>
 								              </tr>
-								            {% endif %}   
+								            {% endif %}
 								          </tbody>
 									</table>
 								</div>
-								
+
 								<div class="row">
 									<p style="margin-top:25px;">
 									{% if user.is_superuser or user.is_staff %}
@@ -125,10 +206,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('table').addClass('table table-bordered');
-		$('#expand-panel').click(function(){
-			$('#resume').toggleClass('col-lg-7 col-md-7 col-sm-7');
-			$(this).html('Contraer Panel');
-		});
 	});
 </script>
 {% endblock %}

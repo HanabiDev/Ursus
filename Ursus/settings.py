@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'dashboard',
     'requisitions',
     'studies',
+    'assignments',
     'settings',
 )
 
@@ -139,5 +140,13 @@ LOGOUT_URL = reverse_lazy('authy:logout')
 #GeoIP database binaries
 GEOIP_PATH = os.path.join(BASE_DIR, 'GeoIP_DB')
 
-REDACTOR_OPTIONS = {'lang': 'es'}
-REDACTOR_UPLOAD = 'uploads/requisitions/atachements/'
+REDACTOR_OPTIONS = {'lang':'es', 'focus':'false', 'minHeight':150, 'maxHeight':150}
+REDACTOR_UPLOAD = 'uploads/redactor/atachements/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gomexa.10@gmail.com'
+EMAIL_HOST_PASSWORD = 'vivianita1005'
+

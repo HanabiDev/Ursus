@@ -29,6 +29,25 @@ def create_studies(request):
 
 		return render_to_response('massive-load.html', {'errors':'Este campo es obligatorio'}, context_instance=RequestContext(request))		
 
+def add_candidate(request):
+	if request.method == 'GET':
+		form = CandidateForm()
+		return render_to_response('study.html', {'adding':True, 'form':form}, context_instance=RequestContext(request))
+
+	if request.method == 'POST':
+		form = CandidateForm(request.POST)
+		if form.is_valid():
+			candidate = form.save()
+			
+			if request.FILES:
+				candidate.candidate_photo = request.FILES.get('avatar')
+			
+			candidate.save()
+
+			return redirect(reverse_lazy('studies:new_study'))
+
+		return render_to_response('study.html', {'adding':True, 'form':form}, context_instance=RequestContext(request))
+
 def create_study(request, req_id):
 	if request.method == 'GET':
 		form = CandidateForm()
@@ -52,6 +71,20 @@ def create_study(request, req_id):
 			return redirect(reverse_lazy('reqs:view_req', kwargs={'req_id':str(req_id)}))
 
 		return render_to_response('study.html', {'id':req_id,'form':form}, context_instance=RequestContext(request))
+
+def add_study(request):
+	if request.method == 'GET':
+		form = StudyForm()
+		return render_to_response('study.html', {'form':form}, context_instance=RequestContext(request))
+	
+	if request.method == 'POST':
+		form = StudyForm(request.POST)
+		if form.is_valid():
+			study = form.save()
+			return redirect(reverse_lazy('studies:home'))
+
+		return render_to_response('study.html', {'form':form}, context_instance=RequestContext(request))
+
 
 def view_study(request, study_id):
 	study = Study.objects.get(id=study_id)

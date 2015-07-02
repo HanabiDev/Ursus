@@ -128,7 +128,6 @@ var Script = function () {
 
     $("#id_type, #id_client").addClass('form-control').chosen({
         width: "50%",
-        disable_search: true,
     });
 
     $("#search-box").change(function(){
@@ -148,13 +147,7 @@ var Script = function () {
         $("#add_user input[type='file']").click();
     });
 
-    $('#id_phone').inputmask({
-        mask: '999-9999'
-    });
 
-    $('#id_mobile').inputmask({
-      mask: '999-999-9999'
-    });
 }();
 
     var update_image = function(obj){

@@ -8,11 +8,16 @@
 
 {% block title %}Agregar Estudio {% endblock %}
 {% block content %}
-	<h3 style="padding-left:20px;">
-		<i class="fa fa-user"></i>
-		Agregar Estudio (Requisición #{{id}})
+	<h3 style="padding-left:20px;margin-top:50px;">
+		<i class="fa fa-search"></i>
+		{% if adding%}
+		Agregar Candidato
+		{% elif id %}
+		Agregar Estudio {% if id %}(Requisición #{{id}}){% endif %}
+		{% endif %}
 	</h3>
 	<hr style="border-color:#ddd;">
+	{% if id or adding %}
 	<div class="col-lg-12">
 		<h4>
 			Ingresar datos del candidato
@@ -30,12 +35,20 @@
 			<button id="change-photo-btn" class="btn btn-primary">Cambiar Foto</button>
 		</p>
 	</div>
+	{% endif %}
 	<div class="col-lg-6">
+		{% if not id and not adding%}
+		<div class="text-right">
+			<a class="btn btn-primary" href="{% url 'studies:new_candidate' %}">
+				Agregar Candidato
+			</a>
+		</div>
+		{% endif %}
 		<form id="add_user" method="POST" action="." enctype="multipart/form-data">
 			{% csrf_token %}
 			{{form}}
 			<p class="text-right" style="margin-top:20px;">
-				<a href="{% url "reqs:view_req" id %}" class="btn btn-default" >Cancelar</a>
+				<a href="{% if id %}{% url "reqs:view_req" id %}{% else %}{% url "studies:home" %}{% endif %}" class="btn btn-default" >Cancelar</a>
 				<button type="submit" class="btn btn-primary" >Guardar Cambios</button>
 			</p>
 		</form>
@@ -47,6 +60,9 @@
   <script src="{% static "js/bootstrap-inputmask/bootstrap-inputmask.min.js" %}"></script>
   <script type="text/javascript">
   	$(document).ready(function(){
+  		{% if not id %}
+  			$('#id_requisition, #id_candidate, #id_service').addClass('form-control').chosen();
+		{% endif %}
   		$('label[for=id_candidate_photo]').hide();
   		$('#id_candidate_photo').hide();
   	});

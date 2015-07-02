@@ -21,12 +21,13 @@
         
     <!-- Custom styles for this template -->
     <link href="{% static "css/style.css" %}" rel="stylesheet">
-    {% block imports %}
-    {% endblock %}
     <link href="{% static "css/style-responsive.css" %}" rel="stylesheet">
 
     <script src="{% static "js/jquery.js" %}"></script>
-    
+
+    {% block imports %}
+    {% endblock %}
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -58,23 +59,14 @@
     <script src="{% static "js/jquery.nicescroll.js" %}" type="text/javascript"></script>
     
     <script class="include" type="text/javascript" src="{% static "js/jquery.dcjqaccordion.2.7.js" %}"></script>
-    
+
+
+
     {% block js_imports %}
     {% endblock %}
 
     <!--common script for all pages-->
     <script src="{% static "js/common-scripts.js" %}"></script>
-
-    <!--script for this page-->
-    
-    <script>
-        //custom select box
-
-        $(function(){
-            $('select.styled').customSelect();
-        });
-
-    </script>
 
   </body>
 </html>

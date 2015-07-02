@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 	url(r'^admin/', include('admin.urls', 'admin')),
 	url(r'^requisiciones/', include('requisitions.urls', 'reqs')),
 	url(r'^estudios/', include('studies.urls', 'studies')),
+	url(r'^asignaciones/', include('assignments.urls', 'assignments')),
 	url(r'^configuracion/', include('settings.urls', 'settings')),
 
 	url(r'^redactor/', include('redactor.urls')),

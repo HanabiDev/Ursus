@@ -8,7 +8,7 @@ class CandidateForm(forms.ModelForm):
 		fields = '__all__'
 
 class StudyForm(forms.ModelForm):
+
 	class Meta:
 		model = Study
-		
 		fields = '__all__'

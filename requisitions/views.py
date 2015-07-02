@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.models import User
+from requisitions.models import Atachment
 
 from users.models import Notification
 from models import Requisition
@@ -26,13 +27,25 @@ def create_req(request):
 		else:
 			form = AddRequisitionForm()
 		return render_to_response('requisition.html', {'form':form}, context_instance=RequestContext(request))
-	
+
 	if request.method == 'POST':
-		
 		form = AddRequisitionForm(request.POST)
-		
 		if form.is_valid():
 			new_req = form.save()
+
+			if request.FILES:
+				files = request.FILES
+				if hasattr(files, 'getlist'):
+					cv_files = files.getlist('curriculums')
+					save_attachements(new_req, 'CV', cv_files)
+
+					orders = files.getlist('orders')
+					save_attachements(new_req, 'BO', orders)
+
+					resume = files.get('resume')
+					new_atachment = Atachment(requisition=new_req, file_type='RE', file_resource=resume)
+					new_atachment.save()
+
 			notificate_requisition(request.user)
 			return redirect(reverse_lazy('reqs:home'))
 
@@ -52,12 +65,12 @@ def edit_req(request, req_id):
 	if request.method == 'POST':
 		req = Requisition.objects.get(id=req_id)
 		form = AddRequisitionForm(request.POST, instance=req)
-        if form.is_valid():
-            new_req = form.save()
+		if form.is_valid():
+			new_req = form.save()
 
-            return redirect(reverse_lazy('reqs:view_req', kwargs={'req_id':str(new_req.id)}))
+			return redirect(reverse_lazy('reqs:view_req', kwargs={'req_id':str(new_req.id)}))
 
-        return render_to_response('requisition.html', {'form':form, 'editing':True, 'id': req_id}, context_instance=RequestContext(request))
+		return render_to_response('requisition.html', {'form':form, 'editing':True, 'id': req_id}, context_instance=RequestContext(request))
 
 def notificate_requisition(site_user):
 	users = User.objects.filter(is_superuser=True)
@@ -71,3 +84,8 @@ def notificate_requisition(site_user):
 			)
 		notification.save()
 
+
+def save_attachements(requisition, type, files):
+	for file in files:
+		new_attachement = Atachment(requisition=requisition, file_type=type, file_resource=file)
+		new_attachement.save()

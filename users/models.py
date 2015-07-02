@@ -24,7 +24,7 @@ USER_ROLES = (
 
 class Role(models.Model):
     name = models.CharField(max_length=50, verbose_name='Nombre')
-    description = RedactorField(redactor_options={'lang':'es', 'focus':'false', 'minHeight':150, 'maxHeight':150}, verbose_name=u'Descripción')
+    description = RedactorField(verbose_name=u'Descripción')
 
     def __unicode__(self):
         return self.name

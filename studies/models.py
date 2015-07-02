@@ -37,7 +37,9 @@ class Candidate(models.Model):
 	email = models.EmailField(verbose_name='Email')
 	aspired_role = models.CharField(max_length=200, verbose_name='Cargo al que aspira')
 	address = models.CharField(max_length=200, verbose_name='Dirección')
-   
+	curriculum = models.FileField(upload_to='uploads/candidates/curriculums/', verbose_name='Hoja de vida')
+
+
 	def __unicode__(self):
 		return self.first_name + ' '+ self.last_name
 
