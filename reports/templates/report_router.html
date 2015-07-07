@@ -1,0 +1,73 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+	{% if editing %}
+		Editar Estudio
+	{% else %}
+		Agregar Estudio
+	{% endif %}
+{% endblock %}
+
+{% block imports %}
+	<link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<h3 style="padding-left:20px;"><i class="fa fa-file-text"></i> 
+		Crear reporte
+	</h3>
+	<hr style="border-color:#ddd;">
+
+
+	<form class="form-horizontal col-md-10" id="add_user" method="POST" action="." enctype="multipart/form-data">
+			{% csrf_token %}
+			{% for field in form %}
+				<div class="form-group">
+				    <label class="col-sm-2 control-label">
+				    	{{field.label}}
+				    </label>
+				    <div class="col-sm-10" style="margin-top:20px;">
+				    	{% for error in field.errors %}
+			    			<p class="text-danger">
+			    				{{error.capitalize}}
+			    			</p>
+			    		{% endfor %}
+				      	{{field}}
+				    </div>
+			  	</div>
+			{% endfor %}
+            
+
+			<p class="text-right">
+				{% if editing %}
+				<a href="{% url "reqs:view_req" id %}" class="btn btn-default" >Cancelar</a>
+				{% else %}
+				<a href="{% url "reqs:home" %}" class="btn btn-default" >Cancelar</a>
+				{% endif %}
+				<button type="submit" class="btn btn-primary" >
+					Crear Reporte
+				</button>
+			</p>
+		</form>
+
+{% endblock %}
+
+
+
+{% block js_imports%}
+
+	<script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+
+	<script type="text/javascript">
+	  	$(document).ready(function(){
+
+  			$('#id_report_type').addClass('form-control').chosen();
+	  			
+	  	});
+
+	</script>
+	{{ form.media }}
+
+{% endblock %}

@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reporte de Estudio de Seguridad{% endblock %}
+
+{% block imports %}
+    <link href="{% static "css/bootstrap-datetimepicker.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <h3 style="padding-left:20px;margin-top:50px;">
+    <i class="fa fa-search"></i>
+    VERIFICACIÓN HOJA DE VIDA
+  </h3>
+  
+  <hr style="border-color:#ddd;">
+  <form class="form-horizontal" method="POST" action=".">
+    {% csrf_token %}
+    <div class="col-lg-12"  style="margin-bottom:100px;">
+
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">VERIFICACIÓN HOJA DE VIDA</h3>
+        </div>
+
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="place">Lugar</label>  
+            <div class="col-md-5">
+              <input id="place" name="place" type="text" placeholder="Lugar" class="form-control input-md" required="" value="{{data.place}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="report_date">
+              Fecha
+            </label>
+            <div class="col-md-5">
+              <div class="input-group date" id="datetimepicker">
+                <input id="report_date" name="report_date" type="text" placeholder="Fecha" class="form-control input-md" required="" value="{{data.report_date}}">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="company">Empresa</label>  
+            <div class="col-md-5">
+              <input id="company" name="company" type="text" placeholder="Empresa" class="form-control input-md" required="" value="{{data.company}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="role">Cargo</label>  
+            <div class="col-md-5">
+              <input id="role" name="role" type="text" placeholder="Cargo" class="form-control input-md" required="" value="{{data.role}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="full_name">Nombres y apellidos</label>  
+            <div class="col-md-5">
+              <input id="full_name" name="full_name" type="text" placeholder="Nombre completo" class="form-control input-md" required="" value="{{data.full_name}}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="dni_type">Tipo de documento</label>
+            <div class="col-md-5">
+              <select id="dni_type" name="dni_type" class="form-control">
+                <option value="C" {% if data.dni_type == 'C' %} selected{% endif %}>
+                  Cédula de Ciudadanía
+                </option>
+                <option value="T" {% if data.dni_type == 'T' %} selected{% endif %}>
+                  Tarjeta de Identidad
+                </option>
+                <option value="E" {% if data.dni_type == 'E' %} selected{% endif %}>
+                  Cédula de Extranjería
+                </option>
+              </select>
+            </div>
+          </div>          
+
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="dni_number">Número</label>  
+            <div class="col-md-5">
+              <input id="dni_number" name="dni_number" type="number" placeholder="Número de documento" class="form-control input-md" required="" value="{{data.dni_number}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="dni_place">Lugar de expedición</label>  
+            <div class="col-md-5">
+              <input id="dni_place" name="dni_place" type="text" placeholder="Lugar de expedición" class="form-control input-md" required="" value="{{data.dni_place}}">
+            </div>
+          </div>        
+        </div>      
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">
+            VERIFICACIONES ACADÉMICAS
+          </h3>
+        </div>
+
+        <div class="panel-body">
+          <div id="academic_data0">
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="institute0">Institución</label>  
+              <div class="col-md-5">
+                <input id="institute0" name="institute0" type="text" placeholder="Nombre de la institución" class="form-control input-md" required="" value="{{data.institute0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="institute_addr0">Dirección</label>  
+              <div class="col-md-5">
+                <input id="institute_addr0" name="institute_addr0" type="text" placeholder="Dirección de la institución" class="form-control input-md" required="" value="{{data.institute_addr0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="institute_phone0">Teléfono</label>  
+              <div class="col-md-5">
+                <input id="institute_phone0" name="institute_phone0" type="text" placeholder="Teléfono de la institución" class="form-control input-md" required="" value="{{data.institute_phone0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="institute_ref0">Referencia</label>  
+              <div class="col-md-5">
+                <input id="institute_ref0" name="institute_ref0" type="text" placeholder="Quien suministra la información" class="form-control input-md" required="" value="{{data.institute_ref0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="ref_role0">Cargo</label>  
+              <div class="col-md-5">
+                <input id="ref_role0" name="ref_role0" type="text" placeholder="Cargo de la referencia" class="form-control input-md" required="" value="{{data.ref_role0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="title0">Título obtenido</label>  
+              <div class="col-md-5">
+                <input id="title0" name="title0" type="text" placeholder="Título obtenido" class="form-control input-md" required="" value="{{data.title0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="title_date0">
+                Fecha
+              </label>
+              <div class="col-md-3">
+                <div class="input-group date" id="datetimepicker">
+                  <input id="title_date0" name="title_date0" type="text" placeholder="Fecha" class="form-control input-md" required="" value="{{data.title_date0}}">
+                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+              </div>
+              <label class="col-md-1 control-label" for="title_doc0">
+                Acta No.
+              </label>
+              <div class="col-md-2">
+                  <input id="title_doc0" name="title_doc0" type="number" placeholder="Numero" class="form-control input-md" required="" value="{{data.title_doc0}}">
+              </div>
+              <label class="col-md-1 control-label" for="title_fold0">
+                Folio No.
+              </label>
+              <div class="col-md-2">
+                  <input id="title_fold0" name="title_fold0" type="number" placeholder="Numero" class="form-control input-md" required="" value="{{data.title_fold0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="pc_number">Tarjeta Profesional No.</label>  
+              <div class="col-md-5">
+                <input id="pc_number" name="pc_number" type="number" placeholder="Tarjeta Profesional" class="form-control input-md" required="" value="{{data.pc_number}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="title_observations0">Observaciones</label>
+              <div class="col-md-9">                     
+                <textarea rows="4" class="form-control" id="title_observations0" name="title_observations0">{{data.title_observations0|safe}}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr style="border-color:#ddd;">
+          <div class="fields_actions col-sm-12 text-center">
+            <button class="del btn btn-danger btn-lg" style="width:40%">
+              Quitar
+            </button>
+            <button class="add btn btn-success btn-lg" style="width:40%">
+              Agregar
+            </button>
+          </div>
+
+
+
+        </div>      
+      </div>
+    
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">
+            VERIFICACIONES LABORALES
+          </h3>
+        </div>
+
+        <div class="panel-body">
+          <div id="academic_data0">
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="company0">Empresa</label>  
+              <div class="col-md-5">
+                <input id="company0" name="company0" type="text" placeholder="Nombre de la empresa" class="form-control input-md" required="" value="{{data.company0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="company_addr0">Dirección</label>  
+              <div class="col-md-5">
+                <input id="company_addr0" name="company_addr0" type="text" placeholder="Dirección de la empresa" class="form-control input-md" required="" value="{{data.company_addr0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="company_phone0">Teléfono</label>  
+              <div class="col-md-5">
+                <input id="company_phone0" name="company_phone0" type="text" placeholder="Teléfono de la empresa" class="form-control input-md" required="" value="{{data.company_phone0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="company_ref0">Referencia</label>  
+              <div class="col-md-5">
+                <input id="company_ref0" name="company_ref0" type="text" placeholder="Quien suministra la información" class="form-control input-md" required="" value="{{data.company_ref0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="cref_role0">Cargo</label>  
+              <div class="col-md-5">
+                <input id="cref_role0" name="cref_role0" type="text" placeholder="Cargo de la referencia" class="form-control input-md" required="" value="{{data.cref_role0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="title0">Título obtenido</label>  
+              <div class="col-md-5">
+                <input id="title0" name="title0" type="text" placeholder="Título obtenido" class="form-control input-md" required="" value="{{data.title0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="title_date0">
+                Fecha
+              </label>
+              <div class="col-md-3">
+                <div class="input-group date" id="datetimepicker">
+                  <input id="title_date0" name="title_date0" type="text" placeholder="Fecha" class="form-control input-md" required="" value="{{data.title_date0}}">
+                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+              </div>
+              <label class="col-md-1 control-label" for="title_doc0">
+                Acta No.
+              </label>
+              <div class="col-md-2">
+                  <input id="title_doc0" name="title_doc0" type="number" placeholder="Numero" class="form-control input-md" required="" value="{{data.title_doc0}}">
+              </div>
+              <label class="col-md-1 control-label" for="title_fold0">
+                Folio No.
+              </label>
+              <div class="col-md-2">
+                  <input id="title_fold0" name="title_fold0" type="number" placeholder="Numero" class="form-control input-md" required="" value="{{data.title_fold0}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="pc_number">Tarjeta Profesional No.</label>  
+              <div class="col-md-5">
+                <input id="pc_number" name="pc_number" type="number" placeholder="Tarjeta Profesional" class="form-control input-md" required="" value="{{data.pc_number}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="title_observations0">Observaciones</label>
+              <div class="col-md-9">                     
+                <textarea rows="4" class="form-control" id="title_observations0" name="title_observations0">{{data.title_observations0|safe}}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr style="border-color:#ddd;">
+          <div class="fields_actions col-sm-12 text-center">
+            <button class="del btn btn-danger btn-lg" style="width:40%">
+              Quitar
+            </button>
+            <button class="add btn btn-success btn-lg" style="width:40%">
+              Agregar
+            </button>
+          </div>
+
+
+
+        </div>      
+      </div>
+
+
+      <div class="row-fluid text-right">
+        <a class="btn btn-danger">Cancelar</a>
+        <input type="submit" class="btn btn-primary" value="Guardar formulario" />
+      </div>
+    </div>
+
+
+  </form>
+  <script type="text/javascript" src="/static/redactor/jquery.redactor.init.js"></script>
+  <script type="text/javascript" src="/static/redactor/redactor.js"></script>
+  <script type="text/javascript" src="/static/redactor/langs/es.js"></script>
+  <link href="/static/redactor/css/redactor.css" type="text/css" media="all" rel="stylesheet">
+  <link href="/static/redactor/css/django_admin.css" type="text/css" media="all" rel="stylesheet">
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('textarea').redactor();
+  });
+  </script>
+
+
+
+  {% block js_imports%}
+
+  <script type="text/javascript" src="{% static "js/moment-with-locales.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.js" %}"></script>
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $('#datetimepicker, #datetimepicker1').datetimepicker({'format':'DD/MM/YYYY'});
+      });
+
+  </script>
+  {{ form.media }}
+
+{% endblock %}
+
+{% endblock %}

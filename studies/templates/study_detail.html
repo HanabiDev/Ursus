@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load study_tags %}
 
 {% block title %} Estudio #{{study.id}} {% endblock %}
 
@@ -32,15 +33,15 @@
 									</div>
 									<div class="col-md-2">
 										<p class="small mt">FECHA</p>
-										<p>{{study.creation_date|date:"M d, Y"}}</p>
+										<p>{{study.creation_date|date:"d \d\e F \d\e Y"}}</p>
 									</div>
 									<div class="col-md-2">
 										<p class="small mt">REQUISICIÓN</p>
 										<p>{{study.requisition}}</p>
 									</div>
 									<div class="col-md-2">
-										<p class="small mt">CANDIDATO</p>
-										<p>{{study.candidate}}</p>
+										<p class="small mt">FECHA DE ENTREGA</p>
+										<p>{{study.limit_date}}</p>
 									</div>
 									<div class="col-md-2">
 										<p class="small mt">SERVICIO</p>
@@ -48,49 +49,110 @@
 									</div>
 									<div class="col-md-2">
 										<p class="small mt">ESTADO</p>
-										<p>Registrada</p>
+										<p>
+											{{study.report_set.all.count}}
+											{% if not study.report_set.all %}
+												Asignado
+											{% else %}
+												En proceso
+											{% endif %}
+										</p>
 									</div>
-									{% if user.is_superuser or user.is_staff %}
-									<div class="col-md-6" style="margin-top:10px;">
-										<a href="{% url "studies:edit_study" study.id %}" class="btn btn-primary" style="width:45%">
+									<div class="col-md-2">
+										<p class="small mt">EMPLEADO</p>
+										<p>
+											{{study.employee.first_name}}
+											{{study.employee.last_name}}
+										</p>
+									</div>
+									<div class="col-md-4">
+										<a href="/media/{{study.attachment}}" target="_blank" download class="btn btn-default btn-lg" style="margin-top:5px;">
+											<span class="fa fa-download"></span>
+											Bajar archivos adjuntos
+										</a>
+									</div>
+
+									<div class="col-md-12" style="margin-top:10px;">
+										{% if user.is_superuser or user.is_staff %}
+										<a href="{% url "studies:edit_study" study.id %}" class="btn btn-primary" style="width:30%">
 											Modificar
 										</a>
-										<a href="{% url "studies:assign_employees" study.id %}" class="btn btn-success" style="width:45%">
-											Asignar Empleados
+										{% endif %}
+										
+										{% if not user.type == 'C' %}
+										<a href="{% url "reports:new_report" study.id %}" class="btn btn-success" style="width:30%">
+											Crear Reporte
 										</a>
+										<a href="{% url "studies:edit_study" study.id %}" class="btn btn-primary" style="width:30%">
+											Subir Reporte
+										</a>
+										{% endif %}
 									</div>
-									{% endif %}
+									
 									
 
 									<div class="col-md-10 col-md-offset-1">
-										<p style="margin-top:20px;" class="small mt">DESCRIPCIÓN DE LA REQUISICIÓN</p>
+										<p style="margin-top:20px;" class="small mt">REPORTES</p>
 									    <table class="table table-striped">
 											<thead>
 									            <tr>
-									              <th class="text-center">Asignación</th>
-									              <th class="text-center">Empleado</th>
-									              <th class="text-center">Cargo</th>
-									              <th class="text-center">Fecha</th>
+									              <th class="text-center">Tipo</th>
+									              <th class="text-center">Candidato</th>
+									              <th class="text-center">Estado</th>
+									              <th class="text-center">Acción</th>
 									            </tr>
 									          </thead>
 									          <tbody>
-									            {% if study.assignment_set.all %}
-									              {% for assignment in study.assignment_set.all %}
+									            {% if study.reportform_set.all %}
+									              {% for report in study.reportform_set.all %}
 									                <tr>
 									                  <td class="text-center">
-									                    <a href="{% url "studies:view_study" study.id%}">
-									                      Asignación #{{assignment.id}}
-									                    </a>
+									                      {{report.get_report_type_display}}
 									                  </td>
 									                  <td class="text-center">
-									                    {{assignment.employee.first_name}} 
-									                    {{assignment.employee.last_name}}
+									                      {{report.json_data|get_candidate}}
 									                  </td>
 									                  <td class="text-center">
-									                    {{assignment.employee.role}}
+									                    {% if report.verified %}
+									                    	Listo
+								                    	{% elif report.locked %}
+								                    		En revisión
+								                    	{% else %}
+								                    		Para envío
+									                    {% endif %}
 									                  </td>
 									                  <td class="text-center">
-									                    {{assignment.asignment_date}}
+									                  	<a href="{% url 'reports:view_report' report.id %}" class="btn btn-primary">
+								                    		<span class="fa fa-eye"></span>
+								                    	</a>
+								                    	{% if not user.type == 'C' %}
+										                    {% if not report.locked or user.is_superuser %}
+										                    	<a href="{% url 'reports:edit_report' report.id %}" class="btn btn-success">
+										                    		<span class="fa fa-edit"></span>
+										                    	</a>
+										                    {% endif %}
+
+										                    {% if not report.locked %}
+										                    	<a href="{% url 'reports:lock_report' report.id %}" class="lock btn btn-warning">
+										                    		<span class="fa fa-lock"></span>
+										                    	</a>
+										                    {% elif report.locked and user.is_superuser %}
+										                    	<a href="{% url 'reports:unlock_report' report.id %}" class="btn btn-warning">
+										                    		<span class="fa fa-unlock"></span>
+										                    	</a>
+										                    {% endif %}
+
+										                    {% if not report.locked or user.is_superuser %}
+										                    <a href="{% url 'reports:remove_report' report.id %}" class="delete btn btn-danger">
+									                    		<span class="fa fa-trash-o"></span>
+									                    	</a>
+									                    	{% endif %}
+									                    	{% if user.is_superuser %}
+										                    	<a href="{% url 'reports:check_report' report.id %}" class="btn btn-default">
+										                    		<span class="fa fa-check"></span>
+										                    	</a>
+										                    {% endif %}
+									                    {% endif %}
 									                  </td>
 									                </tr>            
 									              {% endfor %}
@@ -123,6 +185,14 @@
 		$('#expand-panel').click(function(){
 			$('#resume').toggleClass('col-lg-7 col-md-7 col-sm-7');
 			$(this).html('Contraer Panel');
+		});
+
+		$('.lock, .delete').click(function(event){
+			event.preventDefault();
+			var aproval = confirm('Esta acción no se puede deshacer. ¿Desea continuar?')
+			if(aproval){
+				document.location.href = $(this).attr('href');
+			}
 		});
 	});
 </script>

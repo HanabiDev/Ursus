@@ -46,22 +46,14 @@
         </a>
       </li>
       {% endif %}
-      {% if user.is_superuser or user.is_staff or user.type == 'C'%}
+      
       <li class="sub-menu">
         <a href="{% url "studies:home" %}" >
           <i class="fa fa-search"></i>
           <span>Estudios</span>
         </a>
       </li>
-      {% endif %}
-      {% if user.type == 'E' %}
-      <li class="sub-menu">
-        <a href="{% url "assignments:home" %}" >
-          <i class="fa fa-calendar"></i>
-          <span>Asignaciones</span>
-        </a>
-      </li>
-      {% endif %}
+      
 
       {% if user.is_superuser or user.is_staff %}
       <li class="sub-menu">
@@ -73,7 +65,7 @@
       {% endif %}
 
     </ul>
-    <div class="hidden-xs text-center" style="color: white; position:absolute; bottom:20px;">
+    <div class="hidden-xs text-center" style="color: white; position:absolute; bottom:20px;width: 100%;">
       <p><small>Ursus es desarrollado por</small></p>
       <img src="{% static "img/logo_cosegem.png" %}" style="max-width:80%">
     </div>

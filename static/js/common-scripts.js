@@ -73,7 +73,7 @@ var Script = function () {
 // custom scrollbar
     $("#sidebar").niceScroll({styler:"fb",cursorcolor:"#ABABAB", cursorwidth: '5', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
 
-    $("html").niceScroll({styler:"fb",cursorcolor:"#ABABAB", cursorwidth: '8', cursorborderradius: '10px', background: '#404040', spacebarenabled:false,  cursorborder: '', zindex: '1000'});
+    $("html").niceScroll({styler:"fb",cursorcolor:"#ABABAB", cursorwidth: '8', cursorborderradius: '10px', background: '#404040', spacebarenabled:false,  cursorborder: '', zindex: '1000', enablekeyboard: false});
 
 // widget tools
 
@@ -144,7 +144,7 @@ var Script = function () {
     $("#add_user input[type='file']").attr('onchange','update_image(this)');
 
     $("#change-photo-btn").click(function(){
-        $("#add_user input[type='file']").click();
+        $("#add_user input[type='file']:not(#id_curriculum)").click();
     });
 
 

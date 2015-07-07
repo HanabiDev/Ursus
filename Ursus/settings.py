@@ -50,6 +50,8 @@ if DEVEL:
         os.path.join(BASE_DIR, 'static'),
     )
 
+    #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 else:
     DATABASES = {
         'default': {
@@ -81,9 +83,10 @@ INSTALLED_APPS = (
     'dashboard',
     'requisitions',
     'studies',
-    'assignments',
     'reports',
     'settings',
+    'django.contrib.humanize',
+    'easy_pdf',
 
 )
 
@@ -146,9 +149,9 @@ REDACTOR_OPTIONS = {'lang':'es', 'focus':'false', 'minHeight':150, 'maxHeight':1
 REDACTOR_UPLOAD = 'uploads/redactor/atachements/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gomexa.10@gmail.com'
-EMAIL_HOST_PASSWORD = 'vivianita1005'
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'mail.cosegem.com'
+EMAIL_PORT = 26
+EMAIL_HOST_USER = 'notificaciones.ursus@cosegem.com'
+EMAIL_HOST_PASSWORD = 'notifications'
 

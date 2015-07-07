@@ -19,7 +19,6 @@
       <hr style="border-color:#ddd;">
       <div class="row-fluid actions-bar">
         {% if user.is_superuser or user.is_staff%}
-          <a href="{% url "studies:create_studies"%}" class="btn btn-primary">Carga Masiva </a>
           <a href="{% url "studies:new_study"%}" class="btn btn-success">Agregar Estudio </a>
         {% else %}
           <b style="margin-right:10px;">Buscar: </b>
@@ -42,8 +41,8 @@
               <th class="text-center">Nombre</th>
               <th class="text-center">Fecha</th>
               <th class="text-center hidden-xs">Requisición</th>
-              <th class="text-center">Candidato</th>
               <th class="text-center">Servicio</th>
+              <th class="text-center">Fecha Entrega</th>
               <th class="text-center hidden-xs">Estado</th>
             </tr>
           </thead>
@@ -63,16 +62,16 @@
                     {{study.requisition}}
                   </td>
                   <td class="text-center hidden-xs">
-                    {{study.candidate}}
-                  </td>
-                  <td class="text-center hidden-xs">
                     {{study.service}}
                   </td>
                   <td class="text-center hidden-xs">
-                    {% if study.service.roles.count == study.assignment_set.count %}
-                      Asignado
+                    {{study.limit_date}}
+                  </td>
+                  <td class="text-center hidden-xs">
+                    {% if study.report_set.all.count %}
+                      Para revisión
                     {% else %}
-                      Sin Asignar
+                      Asignado
                     {% endif %}
                   </td>
                 </tr>            
@@ -81,7 +80,7 @@
               <tr>
                 <td colspan="9" class="text-center">
                   <p class="alert alert-info">
-                    No hay Estudios registradas
+                    No hay estudios registrados
                   </p>
                 </td>
               </tr>

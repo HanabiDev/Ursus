@@ -108,7 +108,7 @@
 						</div>
 					</div>
 					<div class="row">
-						{% if site_user = user %}
+						{% if site_user == user %}
 							<p style="margin-top:25px;">
 								<a href="{% url "admin:users:update_account" site_user.id %}" class="btn btn-primary">
 									Actualizar mi información

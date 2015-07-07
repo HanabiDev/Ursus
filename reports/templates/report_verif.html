@@ -1,0 +1,206 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+
+{% block layout_style %}
+    <style type="text/css">
+        @page {
+            size: {{ pagesize|default:"A4" }};
+            margin-left: 2.5cm;
+            margin-right: 2.5cm;
+            margin-top: 4.5cm;
+            margin-bottom: 3cm;
+            @frame header {
+                -pdf-frame-content: page-header;
+                margin-top: 1.3cm;
+                margin-right: 2mm;
+                margin-bottom: 8cm;
+                margin-left: 1.2cm;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block extra_style %}
+    <style type="text/css">
+        @font-face { font-family: "Open Sans"; src: url({{res_path}}/fonts/OpenSans-Bold.ttf); font-weight: bold; }
+        @font-face { font-family: "Open Sans"; src: url({{res_path}}/fonts/OpenSans-Regular.ttf); }
+        @font-face { font-family: "Open Sans"; src: url({{res_path}}/fonts/OpenSans-ExtraBold.ttf); }
+
+        * {
+            font-family: "Open Sans", sans-serif;
+            color: #333333;
+            font-size: 14px;
+        }
+
+        h1,h3{
+        	text-align: center;
+        	margin: 0;
+        }
+
+        td{padding-left: 100px 0;}
+        
+        
+    </style>
+{% endblock %}
+
+{%block page_header%}
+    <div id="page-header" style="margin-bottom:0.5cm;">
+        <p>
+        	<img src="{{res_path}}/img/logo_cosegem.png" />
+        </p>
+    </div>
+    <h1>
+    	CONSULTA DE ANTECEDENTES JUDICIALES
+    </h1>
+{% endblock %}
+
+
+{% block content %}
+    <div id="content">
+        <div>
+            <table>
+                <tr>
+                    <td>
+                    	<strong>Fecha</strong>
+                	</td>
+                    <td>
+                		{{data.report_date}}
+            		</td>
+                </tr>
+                <tr>
+                    <td>
+                    	<strong>Tipo de documento</strong>
+                	</td>
+                    <td>
+                		{% if data.dni_type == 'C' %}
+                			Cédula de ciudadanía
+                		{% elif data.dni_type == 'T' %}
+                			Tarjeta de Identidad
+                		{% elif data.dni_type == 'E' %}
+                			Cédula de extranjería
+                		{% endif %}
+            		</td>
+                </tr>
+                <tr>
+                    <td>
+                    	<strong>Número de documento</strong>
+                	</td>
+                    <td>
+                		{{data.dni_number}}
+            		</td>
+                </tr>
+                <tr>
+                    <td>
+                    	<strong>Nombre completo</strong>
+                	</td>
+                    <td>
+                		{{data.full_name}}
+            		</td>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+        <h3>CONSULTA DE ENTIDADES DEL ESTADO E INTERNACIONALES</h3>
+        
+    	<strong>Antecedentes Penales:</strong>
+    	{% if data.antecedents == 'N' %}
+    		No
+    	{% elif data.antecedents == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.antecedents_observations|safe}}
+        <br><br>
+
+        <strong>Listas Internacionales:</strong>
+    	{% if data.internat_lists == 'N' %}
+    		No
+    	{% elif data.internat_lists == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.internat_lists_observations|safe}}
+        <br><br>
+
+        <strong>Orden de Captura:</strong>
+    	{% if data.capt_order == 'N' %}
+    		No
+    	{% elif data.capt_order == 'Y'%}
+    		Si
+            <br>
+            <h4>Descripción</h4>
+            <strong>Fecha:</strong> {{data.order_date}}<br>
+            <strong>Autoridad:</strong> {{data.order_auth}}<br>
+            <strong>Proceso:</strong> {{data.order_proc}}<br>
+            <strong>Delito:</strong> {{data.order_crime}}<br>
+
+    	{% endif %}	
+        <br><br>
+
+        <strong>Lavado de Activos y Narcotráfico:</strong>
+    	{% if data.narco == 'N' %}
+    		No
+    	{% elif data.narco == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.narco_observations|safe}}
+        <br><br>
+
+        <strong>Lista de Desmovilizados:</strong>
+    	{% if data.desmov_lists == 'N' %}
+    		No
+    	{% elif data.desmov_lists == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.desmov_lists_observations|safe}}
+        <br><br>
+
+        <strong>Antecedentes Disciplinarios:</strong>
+    	{% if data.disc_antec == 'N' %}
+    		No
+    	{% elif data.disc_antec == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.disc_antec_observations|safe}}
+        <br><br>
+
+        <strong>Antecedentes de Responsabilidad Fiscal:</strong>
+    	{% if data.fiscal_antec == 'N' %}
+    		No
+    	{% elif data.fiscal_antec == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.fiscal_antec_observations|safe}}
+        <br><br>
+
+        <strong>Tránsito y Transporte:</strong>
+    	{% if data.trans == 'N' %}
+    		No
+    	{% elif data.trans == 'Y'%}
+    		Si
+    	{% endif %}	
+        <br>
+        <strong>Descripción:</strong>
+        {{data.trans_observations|safe}}
+        <br><br>
+
+        <h3>OBSERVACIONES</h3>
+        <hr>
+        {{data.gen_observations|safe}}
+
+		<h3>CONCEPTO GENERAL</h3>
+        <hr>
+        {{data.gen_concept|safe}}
+    </div>
+{% endblock %}

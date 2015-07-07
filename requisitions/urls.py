@@ -9,6 +9,5 @@ urlpatterns = patterns(
     url(r'^editar/(?P<req_id>\d+)/$', 'requisitions.views.edit_req', name='edit_req'),
 
     url(r'^(?P<req_id>\d+)/crear-estudio/$', 'studies.views.create_study', name='create_study'),
-    url(r'^crear-estudios/$', 'studies.views.create_studies', name='create_studies'),
 
 )

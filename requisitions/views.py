@@ -43,10 +43,11 @@ def create_req(request):
 					save_attachements(new_req, 'BO', orders)
 
 					resume = files.get('resume')
-					new_atachment = Atachment(requisition=new_req, file_type='RE', file_resource=resume)
-					new_atachment.save()
+					if resume:
+						save_attachements(new_req, 'RE', [resume])
+					
 
-			notificate_requisition(request.user, new_req.id)
+			notificate_requisition(new_req.client, new_req.id)
 			return redirect(reverse_lazy('reqs:home'))
 
 		return render_to_response('requisition.html', {'form':form}, context_instance=RequestContext(request))
@@ -76,8 +77,25 @@ def edit_req(request, req_id):
 		if form.is_valid():
 			new_req = form.save()
 
-			return redirect(reverse_lazy('reqs:view_req', kwargs={'req_id':str(new_req.id)}))
+			if request.FILES:
+				files = request.FILES
+				if hasattr(files, 'getlist'):
+					cv_files = files.getlist('curriculums')
+					if cv_files:
+						req.atachment_set.filter(file_type='CV').delete()
+						save_attachements(new_req, 'CV', cv_files)
+					
+					orders = files.getlist('orders')
+					if orders:
+						req.atachment_set.filter(file_type='BO').delete()
+						save_attachements(new_req, 'BO', orders)
 
+					resume = files.get('resume')
+					if resume:
+						save_attachements(new_req, 'RE', [resume])
+			
+			return redirect(reverse_lazy('reqs:home'))
+	
 		return render_to_response('requisition.html', {'form':form, 'editing':True, 'id': req_id}, context_instance=RequestContext(request))
 
 from django.core.mail import send_mail
@@ -103,8 +121,8 @@ def notificate_requisition(site_user, element_id):
 	send_mail(
 		subject=u'Nueva requisición registrada', 
 		message='El cliente '+site_user.first_name+' '+site_user.last_name+' ha registrado una nueva requisicion.',
-		html_message='<p>El cliente '+site_user.first_name+' '+site_user.last_name+' ha registrado una nueva requisicion. <a href="ursus.cosegem.com/requisiciones/ver/'+str(element_id)+'?notif='+str(notification.id)+'">Ver requisicion</a></p>'.decode('utf-8'),
-		from_email='notificaciones.ursus@cosegem.com',
+		html_message='<p>El cliente <b>'+site_user.first_name+' '+site_user.last_name+'</b> ha registrado una nueva requisicion. <a href="ursus.cosegem.com/requisiciones/ver/'+str(element_id)+'?notif='+str(notification.id)+'">Ver requisicion</a></p>'.decode('utf-8'),
+		from_email='Ursus <notificaciones.ursus@cosegem.com>',
 		recipient_list=mails,
 		fail_silently=False 
 	)
