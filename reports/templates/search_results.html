@@ -39,7 +39,7 @@
             <button class="col-sm-2 btn btn-primary" style="margin-top:20px;">Buscar</button>
           </div>
         </form>
-        {% else %}
+        {% elif candidates %}
           <p class="text-right">
             <a href="{% url 'reports:compress_reports' req_id %}" class="btn btn-primary btn-lg">
               <span class="fa fa-download"></span>

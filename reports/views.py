@@ -206,7 +206,7 @@ def edit_upload_report(request, ureport_id):
 			
 			report.save()
 			update_study_status(study)
-			join_reports(request, dni)
+			join_reports(request, candidate.dni_number)
 
 			return redirect(reverse_lazy('studies:view_study', kwargs={'study_id':str(report.study.id)}))
 			
@@ -262,10 +262,11 @@ def search(request):
 	if request.method == 'POST':
 		reports = []
 		dni = request.POST.get('dni')
-		join_reports(request, dni)
 		
 		try:
 			reports = ReportFile.objects.filter(candidate__dni_number=dni, verified=True).order_by('report_type')
+
+			join_reports(request, dni)
 		except Exception, e:
 			print e
 		return render_to_response('search_results.html', {'reps':reports, 'dni':dni}, context_instance=RequestContext(request))
@@ -285,6 +286,11 @@ def search_by_req(request, req_id):
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from django.conf import settings
 def join_reports(request, dni):
+	try:
+		candidate = Candidate.objects.get(dni_number=dni)
+	except Exception, e:
+		return False
+		
 	path = os.path.join(settings.MEDIA_ROOT,"uploads/reports/",dni)
 	filename = path+"/reporte-"+dni+".pdf"
 	
