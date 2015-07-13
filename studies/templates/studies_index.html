@@ -68,11 +68,7 @@
                     {{study.limit_date}}
                   </td>
                   <td class="text-center hidden-xs">
-                    {% if study.report_set.all.count %}
-                      Para revisión
-                    {% else %}
-                      Asignado
-                    {% endif %}
+                    {{study.get_status_display}}
                   </td>
                 </tr>            
               {% endfor %}

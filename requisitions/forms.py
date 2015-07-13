@@ -6,6 +6,8 @@ class AddRequisitionForm(forms.ModelForm):
 	class Meta:
 		model = Requisition
 		fields = '__all__'
+		exclude = ['status']
+		
 	def __init__(self, *args, **kwargs):
 		super(AddRequisitionForm, self).__init__(*args, **kwargs)
 		

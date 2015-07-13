@@ -54,6 +54,14 @@
         </a>
       </li>
       
+      {% if user.is_superuser or user.is_staff or user.type == 'C'%}
+      <li class="sub-menu">
+        <a href="{% url "reports:search" %}" >
+          <i class="fa fa-file-text"></i>
+          <span>Reportes</span>
+        </a>
+      </li>
+      {% endif %}
 
       {% if user.is_superuser or user.is_staff %}
       <li class="sub-menu">

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% load study_tags %}
+
+{% block imports %}
+  <link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+  <link href="{% static "css/bootstrap-sortable.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} 
+  Reportes 
+{% endblock %}
+
+{% block content %}
+	<div class="row mt">
+		<div class="col-lg-12">
+      <h3 class="inline" style="padding-left:20px;">
+        <i class="fa fa-file-text"></i>
+        {% if dni %}
+          Reportes para el documento No. {{dni}}
+        {% else%}
+          Reportes para la requsición No. {{req_id}}
+        {% endif %}
+      </h3>
+      <hr style="border-color:#ddd;">
+      <div class="row-fluid">
+        {% if dni %}
+        <form class="form-horizontal col-md-12" id="add_user" method="POST" action=".">
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              Buscar por documento de identidad
+            </label>
+            <div class="col-sm-4" style="margin-top:20px;">
+              <input name="dni" type="text" class="form-control" /> 
+            </div>
+            <button class="col-sm-2 btn btn-primary" style="margin-top:20px;">Buscar</button>
+          </div>
+        </form>
+        {% else %}
+          <p class="text-right">
+            <a href="{% url 'reports:compress_reports' req_id %}" class="btn btn-primary btn-lg">
+              <span class="fa fa-download"></span>
+              Bajar todos los reportes (.zip)
+            </a>  
+          </p>
+        {% endif %}
+      </div>
+      <section id="unseen">
+        <table class="table table-striped sortable">
+          <thead>
+            <tr>
+              <th class="text-center" colspan="5">
+                Reportes encontrados
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if not candidates %}
+            <tr>
+            
+            <td class="text-center">
+              {{dni}}  
+            </td>
+            {% if reps %}
+              {% for report in reps %}
+                  <td class="text-center">
+                    <a href="/media/{{report.report_file}}" class="fa fa-download text-success">
+                      {{report.get_report_type_display}}
+                    </a>
+                  </td>
+              {% endfor %}
+              <td class="text-center">
+                <a href="/media/uploads/reports/{{reps.0.candidate.dni_number}}/reporte-{{reps.0.candidate.dni_number}}.pdf" class="fa fa-download text-success">
+                  Informe completo
+                </a>
+              </td>
+            {% else %}
+                <td colspan="9" class="text-center">
+                  <p class="alert alert-info">
+                    No hay resultados
+                  </p>
+                </td>
+            {% endif %}   
+            </tr>
+            {% else %}
+              {% for candidate in candidates %}
+                <tr>
+                  <td>{{candidate.dni_number}}</td>
+                  {% for report in candidate.reportfile_set.all %}
+                    <td class="text-center">
+                      {% if report.verified %}
+                      <a href="/media/{{report.report_file}}" class="fa fa-download text-success">
+                        {{report.get_report_type_display}}
+                      </a>
+                      {% endif %}
+                    </td>
+                    {% if forloop.counter == candidate.reportfile_set.all.count %}
+                      {% if candidate.reportfile_set.all.count == 2 %}
+                        <td></td>
+                      {% elif candidate.reportfile_set.all.count == 1 %}
+                        <td></td>
+                        <td></td>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                  <td class="text-center">
+                    <a href="{% url 'reports:join_reports' candidate.dni_number %}" class="fa fa-download text-success">
+                      Informe completo
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+	</div>
+{% endblock %}
+
+{% block js_imports %}
+  <script type="text/javascript" src="{% static "js/bootstrap-sortable.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+{% endblock %}
+

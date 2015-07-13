@@ -2,11 +2,7 @@
 {% load static %}
 
 {% block title %}
-	{% if editing %}
-		Crear reporte
-	{% else %}
-		Crear reporte
-	{% endif %}
+	Subir estudio
 {% endblock %}
 
 {% block imports %}
@@ -15,11 +11,10 @@
 {% endblock %}
 
 {% block content %}
-	<h3 style="padding-left:20px;"><i class="fa fa-file-text"></i> 
-		Crear reporte
+	<h3 style="padding-left:20px;"><i class="fa fa-upload"></i> 
+		Subir estudio
 	</h3>
 	<hr style="border-color:#ddd;">
-
 
 	<form class="form-horizontal col-md-10" id="add_user" method="POST" action="." enctype="multipart/form-data">
 			{% csrf_token %}
@@ -41,14 +36,19 @@
             
 
 			<p class="text-right">
+				<a href="{% url "studies:view_study" id %}" class="btn btn-default" >
+					Cancelar
+				</a>
 				{% if editing %}
-				<a href="{% url "reqs:view_req" id %}" class="btn btn-default" >Cancelar</a>
+				<button type="submit" class="btn btn-primary" >
+					Guardar Cambios
+				</button>
 				{% else %}
-				<a href="{% url "reqs:home" %}" class="btn btn-default" >Cancelar</a>
-				{% endif %}
 				<button type="submit" class="btn btn-primary" >
 					Crear Reporte
 				</button>
+				{% endif %}
+				
 			</p>
 		</form>
 

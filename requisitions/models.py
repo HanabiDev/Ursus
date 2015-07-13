@@ -4,10 +4,18 @@ from django.contrib.auth.models import User
 from redactor.fields import RedactorField
 from users.models import Role
 
+REQ_STATUS = (
+	('R','Registrada'),
+	('P','En proceso'),
+	('T','Terminada'),
+)
+
 class Requisition(models.Model):
 	open_date = models.DateTimeField(auto_now=True)
 	client = models.ForeignKey(User, verbose_name=u'Cliente', on_delete=models.PROTECT)
+	limit_date = models.DateTimeField(verbose_name=u'Fecha Límite')
 	description = RedactorField(verbose_name=u'Descripción')
+	status = models.CharField(max_length=1, default='R', verbose_name=u'Estado', choices=REQ_STATUS)
 
 	def __unicode__(self):
 		return u'Requisición #'+str(self.id)

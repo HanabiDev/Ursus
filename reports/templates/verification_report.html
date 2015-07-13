@@ -101,7 +101,7 @@
           </h3>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body" id="ac_data">
           <div id="academic_data0">
             <div class="form-group">
               <label class="col-md-2 control-label" for="institute0">Institución</label>  
@@ -176,6 +176,7 @@
                 <textarea rows="4" class="form-control" id="title_observations0" name="title_observations0">{{data.title_observations0|safe}}</textarea>
               </div>
             </div>
+            <hr style="border-color:#ddd;">
           </div>
 
           <hr style="border-color:#ddd;">
@@ -183,7 +184,7 @@
             <button class="del btn btn-danger btn-lg" style="width:40%">
               Quitar
             </button>
-            <button class="add btn btn-success btn-lg" style="width:40%">
+            <button class="add_ac btn btn-success btn-lg" style="width:40%">
               Agregar
             </button>
           </div>
@@ -321,6 +322,15 @@
   <script type="text/javascript">
       $(document).ready(function(){
         $('#datetimepicker, #datetimepicker1').datetimepicker({'format':'DD/MM/YYYY'});
+        
+        var n = 1;
+        $('.add_ac').click(function(event){
+          event.preventDefault();
+          
+          $("#academic_data0").after('<div id="academic_data'+n+'"></div>')
+          $("#academic_data"+n).load('/static/test.html');
+        });
+        
       });
 
   </script>

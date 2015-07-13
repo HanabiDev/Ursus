@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load study_tags %}
 
 {% block imports %}
   <link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
@@ -41,6 +42,7 @@
               <th class="text-center">Fecha</th>
               <th class="text-center hidden-xs">Cliente</th>
               <th class="text-center hidden-xs">Estado</th>
+              <th class="text-center hidden-xs">Progreso</th>
             </tr>
           </thead>
           <tbody>
@@ -57,11 +59,16 @@
                   </td>
                   <td class="text-center hidden-xs">{{req.client}}</td>
                   <td class="text-center hidden-xs">
-                    {% if req.study_set.count > 0 %}
-                      {{req.study_set.count}} estudios asignados
-                    {% else %}
-                      Sin Asignar
-                    {% endif %}
+                    {{req.get_status_display}}
+                  </td>
+                  <td class="text-center hidden-xs">
+                  {% if req.status == 'P' %}
+                      <div class="progress" style="margin-bottom:0;">
+                        <div class="progress-bar text-center" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{req.id|get_progress}}%;">
+                          {{req.id|get_progress}}%
+                        </div>
+                      </div>  
+                  {% endif %}
                   </td>
                 </tr>            
               {% endfor %}

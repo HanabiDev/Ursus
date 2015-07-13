@@ -47,7 +47,7 @@
 
 			<p class="text-right">
 				{% if editing %}
-				<a href="{% url "reqs:view_req" id %}" class="btn btn-default" >Cancelar</a>
+				<a href="{% url "studies:view_study" id %}" class="btn btn-default" >Cancelar</a>
 				{% else %}
 				<a href="{% url "reqs:home" %}" class="btn btn-default" >Cancelar</a>
 				{% endif %}
@@ -84,7 +84,7 @@
 		  	);
 		  	$('#id_limit_date').prependTo('#datetimepicker');
 
-		  	$('#datetimepicker').datetimepicker({'format':'DD/MM/YYYY HH:MM'});
+		  	$('#datetimepicker').datetimepicker({'format':'DD/MM/YYYY HH:mm', sideBySide:true, locale:'es-CO', minDate:'{% now "m/d/Y H:i" %}'});
 	  	});
 
 	</script>

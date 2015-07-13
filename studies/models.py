@@ -6,6 +6,12 @@ from requisitions.models import Requisition, Service
 from django.contrib.auth.models import User
 from redactor.fields import RedactorField
 
+STUDY_STATUS = (
+	('A','Asignado'),
+	('R','En revisión'),
+	('F','Terminado'),
+)
+
 def get_path(instance,file):
 	return 'uploads/studies/'+str(instance.id)+file
 
@@ -17,5 +23,5 @@ class Study(models.Model):
 	limit_date = models.DateTimeField(verbose_name=u'Fecha de Entrega')
 	description = RedactorField(verbose_name=u'Descripción')
 	attachment = models.FileField(upload_to=get_path, verbose_name=u'Archivos adjuntos')
-
-
+	observations = RedactorField(verbose_name=u'Observaciones', blank=True, null=True)
+	status = models.CharField(max_length=1, default='A', verbose_name=u'Estado', choices=STUDY_STATUS)

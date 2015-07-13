@@ -41,13 +41,13 @@
 										<p>{{req.open_date|date:"M d, Y"}}</p>
 									</div>
 									<div class="col-md-3">
+										<p class="small mt">TIEMPO RESTANTE</p>
+										<p class="remove-msg">{{req.limit_date|naturaltime}}</p>
+									</div>
+									<div class="col-md-7">
 										<p class="small mt">ESTADO</p>
 										<p>
-											{% if req.study_set.all.count == 0 %}
-												Registrada
-											{% else %}
-												En proceso <br>({{req.study_set.all.count}} Estudios)
-											{% endif %}
+											{{req.get_status_display}}
 										</p>
 									</div>
 									
@@ -168,7 +168,7 @@
 								              <th class="text-center">Estudio</th>
 								              <th class="text-center">Estado</th>
 								              <th class="text-center">Fecha de Asignación</th>
-								              <th class="text-center">Tiempo restante</th>
+								              <th class="text-center">Tiempo para entrega</th>
 								            </tr>
 								          </thead>
 								          <tbody>
@@ -181,18 +181,12 @@
 								                    </a>
 								                  </td>
 								                  <td class="text-center">
-								                    {% if study.reportform_set.all.count == 0 %}
-								                    	Asignado
-							                    	{% elif study.closed %}
-							                    		Finalizado
-								                    {% elif study.reportform_set.all.count > 0 %}
-								                    	En proceso
-								                    {% endif %}
+								                    {{study.get_status_display}}
 								                  </td>
 								                  <td class="text-center">
 								                    {{study.creation_date}}
 								                  </td>
-								                  <td class="text-center">
+								                  <td class="text-center remove-msg">
 								                    {{study.limit_date|naturaltime}}
 								                  </td>
 								                </tr>
@@ -232,6 +226,11 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('table').addClass('table table-bordered');
+		
+		$.each($('.remove-msg'), function(){
+			$(this).html($(this).html().replace('a partir de ahora', ''));
+		});
+
 	});
 </script>
 {% endblock %}

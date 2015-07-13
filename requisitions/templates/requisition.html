@@ -12,6 +12,7 @@
 {% block imports %}
 	<link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
     <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap-datetimepicker.css" %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -92,5 +93,24 @@
 {% block js_imports%}
 
 	<script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/moment-with-locales.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.js" %}"></script>
+	<script type="text/javascript">
+	  	$(document).ready(function(){
+	  			
+	  		$('#id_limit_date').parent().append(
+		  		'<div class="input-group date" id="datetimepicker">\
+	                <span class="input-group-addon">\
+	                    <span class="glyphicon glyphicon-calendar"></span>\
+	                </span>\
+	            </div>'
+		  	);
+		  	$('#id_limit_date').prependTo('#datetimepicker');
+
+		  	$('#datetimepicker').datetimepicker({'format':'DD/MM/YYYY HH:mm', sideBySide:true, locale:'es-CO'});
+	  	});
+
+	</script>
 	{{ form.media }}
+
 {% endblock %}

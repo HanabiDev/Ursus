@@ -48,7 +48,7 @@ def create_req(request):
 					
 
 			notificate_requisition(new_req.client, new_req.id)
-			return redirect(reverse_lazy('reqs:home'))
+			return redirect(reverse_lazy('reqs:view_req', args=(new_req.id,)))
 
 		return render_to_response('requisition.html', {'form':form}, context_instance=RequestContext(request))
 
@@ -94,7 +94,7 @@ def edit_req(request, req_id):
 					if resume:
 						save_attachements(new_req, 'RE', [resume])
 			
-			return redirect(reverse_lazy('reqs:home'))
+			return redirect(reverse_lazy('reqs:view_req', args=(new_req.id,)))
 	
 		return render_to_response('requisition.html', {'form':form, 'editing':True, 'id': req_id}, context_instance=RequestContext(request))
 

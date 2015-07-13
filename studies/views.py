@@ -8,6 +8,7 @@ from forms import StudyForm
 from models import Requisition
 from models import Study
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 def home(request):
 	if request.user.is_superuser or request.user.is_staff:
@@ -15,7 +16,7 @@ def home(request):
 	elif request.user.type == 'C':
 		studies = Study.objects.filter(requisition__client=request.user)
 	else:
-		studies = Study.objects.filter(employee=request.user)
+		studies = Study.objects.filter(~Q(status = 'F'),employee=request.user)
 	
 	studies = studies.order_by('-id')
 	return render_to_response('studies_index.html', {'studies':studies}, context_instance=RequestContext(request))
@@ -41,6 +42,8 @@ def create_study(request, req_id=None):
 				study.attachment = request.FILES.get('attachment')
 			
 			study.save()
+			study.requisition.status='P'
+			study.requisition.save()
 
 			notificate_assignation(study.employee, study.id)
 

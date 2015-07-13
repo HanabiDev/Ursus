@@ -1,0 +1,73 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+	Buscar reportes
+{% endblock %}
+
+{% block imports %}
+	<link href="{% static "css/chosen.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/chosen-bootstrap.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<h3 style="padding-left:20px;"><i class="fa fa-file-text"></i> 
+		Buscar reportes
+	</h3>
+	<hr style="border-color:#ddd;">
+
+	<form class="form-horizontal col-md-10" id="add_user" method="POST" action=".">
+			{% csrf_token %}
+			
+			<div class="form-group">
+			    <label class="col-sm-4 control-label">
+			    	Buscar por documento de identidad
+			    </label>
+			    <div class="col-sm-8" style="margin-top:20px;">
+			    	<input name="dni" type="text" class="form-control" />	
+			    </div>
+		  	</div>
+
+		  	<div class="form-group">
+			    <label class="col-sm-4 control-label">
+			    	Buscar por requisición
+			    </label>
+			    <div class="col-sm-8" style="margin-top:20px;">
+			    	<select id="search-box" class="form-control chosen-select">
+			          <option></option>
+			          {% for req in reqs %}
+			            <option data-href="{% url "reports:search_req" req.id %}">
+			                Requisición #{{req.id}}
+			            </option>
+			          {% endfor %}
+			        </select>	
+			    </div>
+		  	</div>
+            
+
+			<p class="text-right">
+				<button type="submit" class="btn btn-primary" >
+					Buscar
+				</button>
+			</p>
+		</form>
+
+{% endblock %}
+
+
+
+{% block js_imports%}
+
+	<script type="text/javascript" src="{% static "js/chosen.jquery.min.js" %}"></script>
+
+	<script type="text/javascript">
+	  	$(document).ready(function(){
+
+  			$('#id_report_type').addClass('form-control').chosen();
+	  			
+	  	});
+
+	</script>
+	{{ form.media }}
+
+{% endblock %}

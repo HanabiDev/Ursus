@@ -9,6 +9,7 @@ class StudyForm(forms.ModelForm):
 	class Meta:
 		model = Study
 		fields = '__all__'
+		exclude = ['status']
 
 	def __init__(self, *args, **kwargs):
 		super(StudyForm, self).__init__(*args, **kwargs)
