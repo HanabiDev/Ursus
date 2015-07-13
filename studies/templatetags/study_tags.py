@@ -19,7 +19,7 @@ def get_progress(req_id):
 		req.status = 'T'
 		req.save()
 	return progress
-
+	
 import json
 def get_candidate(json_data):
 	data = json.loads(json_data)

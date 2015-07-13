@@ -107,7 +107,7 @@
                     {% endif %}
                   {% endfor %}
                   <td class="text-center">
-                    <a href="{% url 'reports:join_reports' candidate.dni_number %}" class="fa fa-download text-success">
+                    <a href="/media/uploads/reports/{{candidate.dni_number}}/reporte-{{candidate.dni_number}}.pdf" class="fa fa-download text-success">
                       Informe completo
                     </a>
                   </td>

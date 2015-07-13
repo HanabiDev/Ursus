@@ -206,6 +206,7 @@ def edit_upload_report(request, ureport_id):
 			
 			report.save()
 			update_study_status(study)
+			join_reports(request, dni)
 
 			return redirect(reverse_lazy('studies:view_study', kwargs={'study_id':str(report.study.id)}))
 			
